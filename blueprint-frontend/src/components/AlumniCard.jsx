@@ -1,3 +1,15 @@
+/**
+ * AlumniCard Component
+ * 
+ * A card component that displays detailed information about an individual alumnus.
+ * Features include:
+ * - Profile image with university badge
+ * - Personal and academic information
+ * - Achievement highlights
+ * - Interactive elements (voting, sharing)
+ * - Responsive design
+ */
+
 import { useState } from 'react';
 import {
   Box,
@@ -11,8 +23,10 @@ import {
   Tooltip,
   Heading,
   Flex,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { StarIcon, ChevronUpIcon, ExternalLinkIcon } from '@chakra-ui/icons';
+import { FaGraduationCap, FaBriefcase, FaTrophy } from "react-icons/fa";
 
 const AlumniCard = ({ 
   name = "John Doe",
@@ -26,6 +40,8 @@ const AlumniCard = ({
   rank,
   quote,
   impact,
+  philanthropyScore,
+  leadershipScore,
 }) => {
   const [voteCount, setVoteCount] = useState(votes);
   const [hasVoted, setHasVoted] = useState(false);
@@ -37,6 +53,14 @@ const AlumniCard = ({
     badge: isUNC ? 'blue' : 'purple',
     button: isUNC ? 'unc' : 'duke',
   };
+
+  // Dynamic theme colors
+  const cardBg = useColorModeValue("white", "gray.700");
+  const textColor = useColorModeValue("gray.700", "gray.200");
+  const borderColor = useColorModeValue("gray.200", "gray.600");
+
+  // University-specific styling
+  const universityColor = university === "UNC" ? "unc.carolinaBlue" : "duke.dukeBlue";
 
   const handleVote = () => {
     if (!hasVoted) {
@@ -51,11 +75,11 @@ const AlumniCard = ({
       borderWidth="1px"
       borderRadius="xl"
       overflow="hidden"
-      bg={schoolColors.bg}
+      bg={cardBg}
       boxShadow="xl"
       transition="transform 0.3s"
       _hover={{ transform: 'translateY(-4px)' }}
-      borderColor="celebration.gold"
+      borderColor={borderColor}
     >
       {/* Rank Badge */}
       {rank && (
@@ -112,7 +136,7 @@ const AlumniCard = ({
 
       <VStack p={6} spacing={4} align="stretch">
         <VStack align="start" spacing={2}>
-          <Text fontSize="lg" fontWeight="bold" color="gray.700">
+          <Text fontSize="lg" fontWeight="bold" color={textColor}>
             {major}
           </Text>
           <Badge colorScheme="teal" px={3} py={1} borderRadius="full">
@@ -127,11 +151,11 @@ const AlumniCard = ({
         )}
 
         <VStack align="start" spacing={2}>
-          <Text fontWeight="semibold" color="gray.700">Key Achievements:</Text>
+          <Text fontWeight="semibold" color={textColor}>Key Achievements:</Text>
           {achievements.map((achievement, index) => (
             <HStack key={index} spacing={2}>
-              <Icon as={StarIcon} color="celebration.gold" boxSize={4} />
-              <Text fontSize="sm">{achievement}</Text>
+              <Icon as={FaTrophy} color="celebration.gold" boxSize={4} />
+              <Text fontSize="sm" color={textColor}>{achievement}</Text>
             </HStack>
           ))}
         </VStack>
@@ -159,6 +183,15 @@ const AlumniCard = ({
             </Button>
           </Tooltip>
         </Box>
+
+        <HStack justify="space-between" pt={2}>
+          <Badge colorScheme="purple">
+            Leadership: {leadershipScore}
+          </Badge>
+          <Badge colorScheme="green">
+            Philanthropy: {philanthropyScore}
+          </Badge>
+        </HStack>
       </VStack>
     </Box>
   );

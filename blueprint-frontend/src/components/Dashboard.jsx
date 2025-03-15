@@ -1,3 +1,13 @@
+/**
+ * Dashboard Component
+ * 
+ * A comprehensive analytics dashboard that displays key statistics and metrics
+ * about the alumni community. Features include:
+ * - Statistical cards showing key metrics
+ * - Interactive charts and graphs
+ * - Real-time data visualization
+ */
+
 import { useState, useEffect } from 'react';
 import {
   Box,
@@ -24,49 +34,44 @@ import { SearchIcon } from '@chakra-ui/icons';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { FaGraduationCap, FaBriefcase, FaTrophy, FaHandshake } from 'react-icons/fa';
 
+// StatCard Component - Displays individual statistics with icons
 const StatCard = ({ label, value, helpText, icon, accentColor }) => {
-  const bgGradient = useColorModeValue(
-    `linear(to-r, ${accentColor}.50, ${accentColor}.100)`,
-    `linear(to-r, ${accentColor}.900, ${accentColor}.800)`
-  );
+  // Dynamic color values based on theme
+  const bgColor = useColorModeValue('white', 'gray.700');
+  const textColor = useColorModeValue('gray.600', 'gray.200');
 
   return (
     <Box
       p={6}
-      bg="white"
-      borderRadius="xl"
+      bg={bgColor}
+      borderRadius="lg"
       boxShadow="xl"
+      border="1px"
+      borderColor={accentColor}
       position="relative"
-      overflow="hidden"
-      borderWidth="1px"
-      borderColor="celebration.gold"
       _before={{
         content: '""',
-        position: 'absolute',
+        position: "absolute",
         top: 0,
         left: 0,
         right: 0,
-        height: '4px',
-        bgGradient: bgGradient,
+        height: "4px",
+        bg: accentColor
       }}
     >
-      <Flex justify="space-between" align="center" mb={4}>
-        <Icon as={icon} boxSize={8} color={`${accentColor}.500`} />
-        <Badge variant="celebration" fontSize="sm">
-          Top 50
-        </Badge>
-      </Flex>
       <Stat>
-        <StatLabel fontSize="lg" color="gray.600">{label}</StatLabel>
-        <StatNumber fontSize="3xl" fontWeight="bold" color="gray.800">
-          {value}
-        </StatNumber>
-        {helpText && (
-          <StatHelpText color="gray.500" fontSize="md">
-            {helpText}
-          </StatHelpText>
-        )}
+        <StatLabel color={textColor} fontSize="lg">{label}</StatLabel>
+        <StatNumber fontSize="3xl" color={accentColor}>{value}</StatNumber>
+        <StatHelpText>{helpText}</StatHelpText>
       </Stat>
+      <Icon
+        as={icon}
+        position="absolute"
+        top={4}
+        right={4}
+        boxSize={6}
+        color={accentColor}
+      />
     </Box>
   );
 };
